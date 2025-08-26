@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GCPROACTIVE Case Studies - Real results from businesses we've helped grow through digital marketing strategies">
+    <meta name="keywords" content="case studies, digital marketing results, client success stories, marketing campaigns">
+    <meta name="author" content="GCPROACTIVE">
+    <title>Case Studies - GCPROACTIVE</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo Placeholder -->
+                <div class="logo">
+                    <a href="index.html" aria-label="Home">
+                        <h1>GCPROACTIVE</h1>
+                    </a>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="nav" role="navigation" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="about.html" class="nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="services.html" class="nav-link">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="case-studies.html" class="nav-link" aria-current="page">Case Studies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="contact.html" class="nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <!-- Mobile Menu Toggle (for responsive design) -->
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span class="hamburger"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="main" role="main">
+        <div class="container">
+            <!-- Case Studies Hero Section -->
+            <section class="case-studies-hero">
+                <div class="case-studies-hero-content">
+                    <h1 class="case-studies-hero-headline">Case Studies</h1>
+                    <p class="case-studies-hero-subtext">Real results from businesses we've helped grow.</p>
+                </div>
+            </section>
+            
+            <!-- Case Studies Content Section -->
+            <section id="case-studies">
+                <div class="container">
+                    <h2>Our Case Studies</h2>
+                    
+                    <div class="case-study-item">
+                        <h3>E-commerce Brand Growth</h3>
+                        <p>Scaled an online store's revenue by 250% in just 6 months using Google Ads and email automation.</p>
+                        <p>We created a custom ad funnel with retargeting campaigns and automated email flows. By testing different creatives and segmenting audiences, the client saw consistent growth month over month. Our data-driven approach ensured every marketing dollar was optimized for maximum return on investment.</p>
+                    </div>
+                    
+                    <div class="case-study-item">
+                        <h3>Local Service Business SEO</h3>
+                        <p>Boosted a local plumbing company's search rankings, increasing organic leads by 80% in 4 months.</p>
+                        <p>We optimized their site structure, added service-specific landing pages, and launched a blog strategy targeting common customer questions. Within months, they ranked on page 1 for several high-intent local keywords. The comprehensive local SEO strategy included Google My Business optimization, local citation building, and customer review management.</p>
+                    </div>
+                    
+                    <div class="case-study-item">
+                        <h3>App Launch Campaign</h3>
+                        <p>Drove over 20,000 installs for a new mobile app with a targeted TikTok and Meta ad strategy.</p>
+                        <p>The campaign focused on creative short-form videos tailored to Gen Z users. A/B testing ad variations allowed us to cut acquisition costs by 40%, ensuring installs translated into active, engaged users. We implemented a multi-platform approach with TikTok, Instagram, and Facebook ads, each optimized for the specific platform's audience behavior.</p>
+                    </div>
+                    
+                    <div class="case-study-item">
+                        <h3>B2B Lead Generation</h3>
+                        <p>Generated 150+ qualified leads for a SaaS company through LinkedIn advertising and content marketing.</p>
+                        <p>We developed a comprehensive LinkedIn strategy targeting decision-makers in specific industries. Combined with thought leadership content and retargeting campaigns, we achieved a 65% increase in qualified leads within 3 months. The strategy included account-based marketing, personalized content creation, and sophisticated lead nurturing sequences.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>GCPROACTIVE</h4>
+                    <p>Professional services and innovative solutions.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: cindydigital09@gmail.com</p>
+                    <p>Phone: +63 917 323 1816</p>
+                    <p>WhatsApp: +63 917 323 1816</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 GCPROACTIVE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for mobile menu functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle functionality
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.nav');
+            
+            if (mobileMenuToggle && nav) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    nav.classList.toggle('nav-open');
+                    this.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
