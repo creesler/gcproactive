@@ -173,9 +173,12 @@ function initTypingEffect() {
     const deltaTime = time - lastTime;
     const currentWord = words[wordIndex];
 
-    let currentSpeed = isDeleting ? 50 : 120;
-    if (!isDeleting && charIndex === currentWord.length) currentSpeed = 2000;
-    if (isDeleting && charIndex === 0) currentSpeed = 500;
+    // Human-like variable timing
+    let randomJitter = Math.random() * 150; 
+    let currentSpeed = isDeleting ? 100 : (180 + randomJitter);
+
+    if (!isDeleting && charIndex === currentWord.length) currentSpeed = 3000; // Pause at end
+    if (isDeleting && charIndex === 0) currentSpeed = 1000; // Pause before new word
 
     if (deltaTime >= currentSpeed) {
       if (isDeleting) {
