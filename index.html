@@ -3,228 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional website with modern design and responsive layout">
-    <meta name="keywords" content="web design, development, services, case studies">
-    <meta name="author" content="GCPROACTIVE">
-    <title>GCPROACTIVE - Professional Services</title>
+    <title>GC Proactive | Business Automation Systems for SMBs</title>
+    <meta name="description" content="GC Proactive helps small and medium businesses scale with custom automation systems, CRM integrations, and streamlined operations.">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
+
+    <!-- Navigation -->
+    <nav id="navbar">
         <div class="container">
-            <div class="header-content">
-                <!-- Logo Placeholder -->
-                <div class="logo">
-                    <a href="index.html" aria-label="Home">
-                        <h1>GCPROACTIVE</h1>
-                    </a>
+            <a href="#hero" class="logo-link">
+                <img src="images/logo.png" alt="GC Proactive Logo" class="logo-img">
+                <span class="logo-text">GC <span class="text-blue">PROACTIVE</span></span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#about">What We Do</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact" class="btn btn-outline" style="padding: 10px 20px;">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="fade-up">Turn <span class="text-gradient">Manual Work</span> Into <br> Scalable Systems</h1>
+            <p class="fade-up">We help small and medium businesses save time, reduce overhead, and scale faster through smart automation and business systems consultancy.</p>
+            <div class="hero-ctas fade-up">
+                <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+                <a href="#about" class="btn btn-outline">Explore Services</a>
+            </div>
+            <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.6;" class="fade-up">Trusted by growing agencies, consultants, and service providers.</p>
+        </div>
+    </section>
+
+    <!-- What We Do -->
+    <section id="about">
+        <div class="container">
+            <h2 class="fade-up">Intelligent <span class="text-blue">Automation</span> Services</h2>
+            <div class="services-grid">
+                <div class="glass-card">
+                    <div class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg></div>
+                    <h3>Workflow Automation</h3>
+                    <p>Stop doing the same tasks twice. We map and automate your repetitive daily workflows so you can focus on high-value work.</p>
                 </div>
-                
-                <!-- Navigation -->
-                <nav class="nav" role="navigation" aria-label="Main navigation">
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link" aria-current="page">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="about.html" class="nav-link">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="services.html" class="nav-link">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="case-studies.html" class="nav-link">Case Studies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="contact.html" class="nav-link">Contact</a>
-                        </li>
-                    </ul>
-                </nav>
-                
-                <!-- Mobile Menu Toggle (for responsive design) -->
-                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
-                    <span class="hamburger"></span>
-                </button>
+                <div class="glass-card">
+                    <div class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-2"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8"/></svg></div>
+                    <h3>Lead & CRM Mastery</h3>
+                    <p>Never miss a lead again. We automate lead capture, nurturing, and CRM pipeline management for maximum conversion.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"/><path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"/></svg></div>
+                    <h3>Onboarding Systems</h3>
+                    <p>Impress your clients from day one. Automated onboarding ensures consistent experiences and reduces manual admin stress.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m2.6 11.08 8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m2.6 16.08 8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/></svg></div>
+                    <h3>Tech Stack Integration</h3>
+                    <p>Connect your favorite tools. We bridge the gap between Slack, CRM, Email, and Project Management for a unified operation.</p>
+                </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <!-- Main Content Section -->
-    <main class="main" role="main">
+    <!-- Why Automation -->
+    <section id="why-automation" style="background: var(--bg-darker);">
         <div class="container">
-            <section class="hero">
-                <div class="hero-overlay"></div>
-                <div class="hero-content">
-                    <h1 class="hero-headline">We Help Brands Grow Online</h1>
-                    <p class="hero-subheadline">Creative strategies and data-driven marketing to scale your business.</p>
-                    <div class="hero-buttons">
-                        <a href="contact.html" class="btn btn-primary">Work With Us</a>
-                        <a href="services.html" class="btn btn-secondary">Our Services</a>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Services Section -->
-            <section class="services">
-                <div class="container">
-                    <h2 class="section-title">Our Services</h2>
-                    <div class="services-grid">
-                        <div class="service-card">
-                            <div class="service-icon">📈</div>
-                            <h3 class="service-title">Paid Advertising</h3>
-                            <p class="service-description">Smart campaigns on Google, Meta, and TikTok that drive real results.</p>
-                        </div>
-                        
-                        <div class="service-card">
-                            <div class="service-icon">🔍</div>
-                            <h3 class="service-title">SEO & Content</h3>
-                            <p class="service-description">Optimized strategies to improve visibility and attract the right audience.</p>
-                        </div>
-                        
-                        <div class="service-card">
-                            <div class="service-icon">💻</div>
-                            <h3 class="service-title">Web Design & Development</h3>
-                            <p class="service-description">Modern, responsive websites built for speed and conversions.</p>
-                        </div>
-                        
-                        <div class="service-card">
-                            <div class="service-icon">📧</div>
-                            <h3 class="service-title">Email & SMS Marketing</h3>
-                            <p class="service-description">Retention-focused campaigns that keep customers coming back.</p>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 3rem;">
-                        <p style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #666;">Ready to get started with your digital marketing strategy?</p>
-                        <a href="contact.html" class="btn btn-primary">Contact Us</a>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Results Section -->
-            <section class="results">
-                <div class="container">
-                    <h2 class="section-title">Our Results</h2>
-                                         <div class="results-grid">
-                         <div class="result-card">
-                             <div class="result-icon">📈</div>
-                             <h3 class="result-headline">3x ROAS in 3 Months</h3>
-                             <p class="result-description">Helped an e-commerce brand scale profitably with paid ads.</p>
-                         </div>
-                         
-                         <div class="result-card">
-                             <div class="result-icon">💎</div>
-                             <h3 class="result-headline">40% More Retention</h3>
-                             <p class="result-description">Boosted customer loyalty through email and SMS campaigns.</p>
-                         </div>
-                         
-                         <div class="result-card">
-                             <div class="result-icon">🌍</div>
-                             <h3 class="result-headline">From Local to Global</h3>
-                             <p class="result-description">Transformed a small business into an international online brand.</p>
-                         </div>
-                     </div>
-                </div>
-            </section>
-            
-            <!-- Why Choose Us Section -->
-            <section class="why-choose-us">
-                <div class="container">
-                    <div class="why-choose-grid">
-                        <div class="why-choose-content">
-                            <h2 class="why-choose-headline">Why Work With Us?</h2>
-                            <p class="why-choose-intro">We combine creative strategy with performance marketing to deliver growth you can measure.</p>
-                            <ul class="why-choose-checklist">
-                                <li class="checklist-item">
-                                    <span class="checkmark">✔</span>
-                                    <span class="checklist-text">Proven Track Record</span>
-                                </li>
-                                <li class="checklist-item">
-                                    <span class="checkmark">✔</span>
-                                    <span class="checklist-text">Creative & Data-Driven Approach</span>
-                                </li>
-                                <li class="checklist-item">
-                                    <span class="checkmark">✔</span>
-                                    <span class="checklist-text">Transparent Communication</span>
-                                </li>
-                                <li class="checklist-item">
-                                    <span class="checkmark">✔</span>
-                                    <span class="checklist-text">Long-Term Partnerships</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="why-choose-visual">
-                            <div class="visual-placeholder">
-                                <div class="placeholder-icon">🎯</div>
-                                <p class="placeholder-text">Strategic Excellence</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-                         <!-- Ready to Grow Section -->
-             <section class="ready-to-grow">
-                 <div class="container">
-                     <div class="ready-to-grow-content">
-                         <h2 class="ready-to-grow-headline">Ready to Grow Your Business?</h2>
-                         <p class="ready-to-grow-text">Let's create a strategy that works for you.</p>
-                         <a href="contact.html" class="btn btn-cta">Get Started</a>
-                     </div>
-                 </div>
-             </section>
-        </div>
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="footer" role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>GCPROACTIVE</h4>
-                    <p>Professional services and innovative solutions.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+            <div class="split-layout">
+                <div class="split-content fade-up">
+                    <h2 style="text-align: left;">Stop Fighting <br><span class="text-green">Inefficiency</span></h2>
+                    <p>Repetitive admin, slow follow-ups, and disconnected tools are the "silent killers" of growing businesses. If your team is spending 50% of their time on data entry, you aren't scaling—you're just getting busier.</p>
+                    <ul class="benefit-list">
+                        <li><span class="dot"></span> <strong>Instant Responses:</strong> Improve speed-to-lead by 400%.</li>
+                        <li><span class="dot"></span> <strong>Zero Manual Errors:</strong> Clean data across all systems.</li>
+                        <li><span class="dot"></span> <strong>Focus on ROI:</strong> Spend time on strategy, not spreadsheets.</li>
+                        <li><span class="dot"></span> <strong>Scalability:</strong> Grow your volume without growing your head-count.</li>
                     </ul>
                 </div>
-                
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <p>Email: cindydigital09@gmail.com</p>
-                    <p>Phone: +63 917 323 1816</p>
-                    <p>WhatsApp: +63 917 323 1816</p>
+                <div class="split-visual fade-up">
+                    <!-- This could be a static image or a CSS graphic -->
+                    <div class="automation-visual">
+                        <div class="circle outer"></div>
+                        <div class="circle inner"></div>
+                        <div class="logo-placeholder">
+                            <img src="images/logo.png" alt="Logo" style="width: 80px;">
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 GCPROACTIVE. All rights reserved.</p>
+        </div>
+    </section>
+
+    <!-- Solutions / Use Cases -->
+    <section id="solutions">
+        <div class="container">
+            <h2 class="fade-up">Proactive <span class="text-gradient">Solutions</span></h2>
+            <div class="solutions-grid">
+                <div class="glass-card solution-item fade-up">
+                    <h4>"The Speed-to-Lead System"</h4>
+                    <p>Auto-respond to new inquiries with AI-personalized emails and text messages the second they hit your website.</p>
+                </div>
+                <div class="glass-card solution-item fade-up">
+                    <h4>"The Seamless Sync"</h4>
+                    <p>Automatically push every form submission, payment, and booking into your CRM and Slack channels instantly.</p>
+                </div>
+                <div class="glass-card solution-item fade-up">
+                    <h4>"The Auto-Onboarder"</h4>
+                    <p>Triggers contracts, invoices, and introductory tasks the moment a deal is won. No manual clicks required.</p>
+                </div>
+                <div class="glass-card solution-item fade-up">
+                    <h4>"Financial Flow"</h4>
+                    <p>Connect your payment processor to your accounting software and task manager for real-time revenue tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who We Help -->
+    <section id="targeting" style="background: var(--bg-darker);">
+        <div class="container text-center">
+            <h2 class="fade-up">Built for <span class="text-blue">Growing</span> SMBs</h2>
+            <p class="fade-up" style="max-width: 800px; margin: 0 auto 3rem;">We partner with service businesses, agencies, and consultants who have reached their limit with manual work and are ready to professionalize their backend.</p>
+            <div class="industry-tags fade-up">
+                <span class="tag">Digital Agencies</span>
+                <span class="tag">Consultancies</span>
+                <span class="tag">E-commerce Operators</span>
+                <span class="tag">Local Service Providers</span>
+                <span class="tag">Real Estate Teams</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process">
+        <div class="container text-center">
+            <h2 class="fade-up">Our <span class="text-green">3-Step</span> Build Process</h2>
+            <div class="process-grid">
+                <div class="process-step fade-up">
+                    <div class="step-num">01</div>
+                    <h3>Discover</h3>
+                    <p>We audit your current tech stack and identify every manual bottleneck in your operation.</p>
+                </div>
+                <div class="process-step fade-up">
+                    <div class="step-num">02</div>
+                    <h3>Design & Build</h3>
+                    <p>We architect a custom "Automation Map" and build the systems using industry-leading tools.</p>
+                </div>
+                <div class="process-step fade-up">
+                    <div class="step-num">03</div>
+                    <h3>Optimize</h3>
+                    <p>We train your team, monitor the flows, and refine for maximum performance and ROI.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <h2 class="fade-up">Common <span class="text-blue">Questions</span></h2>
+            <div class="faq-accordion fade-up">
+                <div class="faq-item glass-card">
+                    <div class="faq-question">What kinds of businesses do you work with? <span class="arrow">+</span></div>
+                    <div class="faq-answer">We primarily work with small-to-medium service businesses, agencies, and operations-heavy startups that handle high volumes of leads or client data.</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">What exactly can be automated? <span class="arrow">+</span></div>
+                    <div class="faq-answer">Almost anything digital: lead intake, CRM updates, client onboarding, invoicing, internal notifications, reporting, and inter-app data syncing.</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">Do I need special software? <span class="arrow">+</span></div>
+                    <div class="faq-answer">We leverage industry standards like Zapier, Make, and GoHighLevel. We help you choose the most cost-effective stack for your specific needs.</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">Can you work with our existing tools? <span class="arrow">+</span></div>
+                    <div class="faq-answer">Yes, we specialize in "connecting the dots" between the software you already use and love.</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">How long does automation setup take? <span class="arrow">+</span></div>
+                    <div class="faq-answer">Typical implementations take between 2 to 4 weeks depending on the complexity of the systems.</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">Is this only for large companies? <span class="arrow">+</span></div>
+                    <div class="faq-answer">Absolutely not. In fact, SMBs benefit most as automation allows them to compete with larger teams without the massive headcount.</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">Will automation replace human interaction? <span class="arrow">+</span></div>
+                    <div class="faq-answer">No. It handles the "robot work" (data entry, reminders) so your humans can focus on "human work" (relationships, strategy).</div>
+                </div>
+                <div class="faq-item glass-card">
+                    <div class="faq-question">How do we get started? <span class="arrow">+</span></div>
+                    <div class="faq-answer">The first step is a free Automation Audit. Click any of the "Book a Consultation" buttons to grab a time.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info fade-up">
+                    <h2 style="text-align: left;">Ready to <span class="text-gradient">Scale?</span></h2>
+                    <p>Let's build the systems your business deserves. Reach out to schedule your free audit.</p>
+                    <div class="contact-details">
+                        <div class="contact-card glass-card">
+                            <p>Email us at:</p>
+                            <a href="mailto:Support@gcproactive.com" style="color: var(--secondary); font-weight: 700; font-size: 1.2rem; text-decoration: none;">Support@gcproactive.com</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form fade-up">
+                    <form class="glass-card" onsubmit="event.preventDefault(); alert('Message sent! We will contact you shortly.');">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Business Email</label>
+                            <input type="email" placeholder="email@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" placeholder="Your business" required>
+                        </div>
+                        <div class="form-group">
+                            <label>How can we help?</label>
+                            <textarea placeholder="Tell us about your manual bottlenecks..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="Logo" class="logo-img">
+                <span class="logo-text">GC <span class="text-blue">PROACTIVE</span></span>
+                <p>Scaling small businesses through intelligent systems.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#about">Services</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#process">Process</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 GC PROACTIVE. All rights reserved. <br>
+                <a href="mailto:Support@gcproactive.com">Support@gcproactive.com</a>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript for mobile menu functionality -->
+    <script src="assets/js/main.js"></script>
     <script>
-        // Mobile menu toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const nav = document.querySelector('.nav');
-            
-            if (mobileMenuToggle && nav) {
-                mobileMenuToggle.addEventListener('click', function() {
-                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                    this.setAttribute('aria-expanded', !isExpanded);
-                    nav.classList.toggle('nav-open');
-                    this.classList.toggle('active');
-                });
-            }
+        // Inline script for FAQ toggle
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                parent.classList.toggle('active');
+            });
         });
     </script>
 </body>
