@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initThreeHero();
   initScrollEffects();
+  initTypingEffect();
 });
 
 // Three.js Hero Animation
