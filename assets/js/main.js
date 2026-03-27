@@ -166,32 +166,37 @@ function initTypingEffect() {
   let wordIndex = 0;
   let charIndex = 0;
   let isDeleting = false;
-  let typeSpeed = 150;
+  let lastTime = 0;
+  let typeSpeed = 100;
 
-  function type() {
+  function type(time) {
+    const deltaTime = time - lastTime;
     const currentWord = words[wordIndex];
+
+    let currentSpeed = isDeleting ? 50 : 120;
+    if (!isDeleting && charIndex === currentWord.length) currentSpeed = 2000;
+    if (isDeleting && charIndex === 0) currentSpeed = 500;
+
+    if (deltaTime >= currentSpeed) {
+      if (isDeleting) {
+        charIndex--;
+      } else {
+        charIndex++;
+      }
+
+      textElement.textContent = currentWord.substring(0, charIndex);
+      lastTime = time;
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+      }
+    }
     
-    if (isDeleting) {
-      charIndex--;
-      typeSpeed = 100;
-    } else {
-      charIndex++;
-      typeSpeed = 200;
-    }
-
-    textElement.textContent = currentWord.substring(0, charIndex);
-
-    if (!isDeleting && charIndex === currentWord.length) {
-      isDeleting = true;
-      typeSpeed = 2000; // Pause at end
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      typeSpeed = 500;
-    }
-
-    setTimeout(type, typeSpeed);
+    requestAnimationFrame(type);
   }
 
-  type();
+  requestAnimationFrame(type);
 }
