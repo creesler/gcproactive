@@ -1,0 +1,392 @@
+Build a simple MVP web app for my automation agency.
+Goal:
+Create a client dashboard plus admin dashboard for a prepaid credit conversion system. This system converts third-party provider usage into our own internal credits. Clients will use their own n8n instance, and their n8n workflows will POST usage events to our Node.js API. Our server will compute billable credits using provider pricing plus our markup rules, deduct balance, and store logs.
+Important:
+This is only for the prepaid system and monthly service tracking. Do not build workflow editing, chatbot builders, advanced analytics, or provider-native dashboards.
+Core product logic:
+1.	Clients have a prepaid credit balance.
+2.	Client n8n workflows send usage events to our Node server webhook after billable provider calls.
+3.	Our Node server converts usage into raw cost.
+4.	Our Node server applies markup rules.
+5.	Our Node server converts billable amount into internal credits.
+6.	Credits are deducted immediately.
+7.	Every event is logged.
+8.	Monthly hosting/retainer/support tracking is separate from prepaid credits.
+System modules:
+1.	Client authentication
+2.	Client dashboard
+3.	Admin dashboard
+4.	Pricing rules engine
+5.	Usage event webhook API
+6.	Credit wallet / transaction ledger
+7.	Monthly retainer / support ledger
+8.	Daily provider price fetcher
+9.	Audit logs
+Recommended tech stack:
+Frontend:
+•	Next.js
+•	TypeScript
+•	Tailwind CSS
+•	shadcn/ui or similar clean component library
+Backend:
+•	Node.js
+•	Express or NestJS
+•	TypeScript
+Database:
+•	PostgreSQL
+ORM:
+•	Prisma
+Auth:
+•	NextAuth or Clerk
+Background jobs:
+•	cron job or BullMQ worker for daily provider pricing refresh
+Caching:
+•	Redis optional, mainly for rate-limits, idempotency helpers, and cached price lookups
+Deployment:
+•	Vercel for frontend
+•	Railway / Render / VPS / Docker for backend
+•	PostgreSQL managed database
+Architecture rules:
+•	Multi-tenant system
+•	Every client has isolated balance, transactions, usage logs, support hours, and warranty dates
+•	Every usage event must include event_id for idempotency
+•	Never double charge the same event_id
+•	Node server is the source of truth for billing
+•	Daily provider pricing fetch is for price reference and pricing rule updates, not direct client-facing billing transparency
+•	Admin can override provider prices manually
+•	Admin can set custom markup per provider, per model, or per service
+Main entities:
+1.	users
+2.	clients
+3.	client_balances
+4.	usage_events
+5.	credit_transactions
+6.	provider_price_snapshots
+7.	pricing_rules
+8.	monthly_subscriptions
+9.	support_hour_ledgers
+10.	warranty_periods
+11.	api_keys
+12.	audit_logs
+Client dashboard navigation:
+1.	Dashboard
+2.	Credits
+3.	Transactions
+4.	Usage History
+5.	Subscription
+6.	Support Hours
+7.	Warranty
+8.	API Keys
+9.	Account
+Client dashboard pages:
+Dashboard:
+•	current credit balance
+•	low balance alert
+•	current subscription status
+•	support hours remaining
+•	warranty expiration date
+•	recent usage events
+•	recent transactions
+Credits:
+•	current balance
+•	recharge history
+•	add credits button placeholder
+•	visible explanation that credits are used for variable AI/provider usage only
+Transactions:
+•	ledger of all credit additions and deductions
+•	columns: date, type, amount, description, related provider, status
+Usage History:
+•	table of usage events
+•	columns: date, provider, service, model, raw cost, markup applied, credits deducted, workflow/source, event_id
+•	filtering by date/provider/service/client source
+Subscription:
+•	monthly hosting plan
+•	retainer status
+•	renewal date
+•	monthly fee
+•	plan notes
+Support Hours:
+•	included hours
+•	used hours
+•	remaining hours
+•	support logs by date
+•	support entry notes
+Warranty:
+•	launch date
+•	warranty start
+•	warranty end
+•	active or expired badge
+API Keys:
+•	client webhook/API credentials for n8n to send billing events
+•	rotate key button
+•	masked view of keys
+Account:
+•	profile info
+•	company name
+•	email
+•	password change
+Admin dashboard navigation:
+1.	Overview
+2.	Clients
+3.	Balances
+4.	Usage Events
+5.	Transactions
+6.	Provider Pricing
+7.	Markup Rules
+8.	Monthly Plans
+9.	Support Logs
+10.	Warranty Tracking
+11.	API Keys
+12.	Audit Logs
+13.	Settings
+Admin dashboard pages:
+Overview:
+•	total clients
+•	active clients
+•	total credits sold
+•	total credits consumed
+•	estimated margin
+•	low balance clients
+•	expiring warranties
+•	overdue renewals
+Clients:
+•	searchable client list
+•	status
+•	subscription plan
+•	balance
+•	support hours remaining
+•	warranty status
+•	click into client profile
+Balances:
+•	all client balances
+•	add/deduct credits manually
+•	reason required for admin adjustments
+Usage Events:
+•	full event log
+•	filter by client/provider/model/date/status
+•	inspect raw payload
+•	see computed raw cost, markup, and credits charged
+•	duplicate event detection
+•	idempotency status
+Transactions:
+•	client credit ledger
+•	top-ups, deductions, adjustments, refunds
+Provider Pricing:
+This is important.
+Build a provider pricing management page that shows:
+•	provider name
+•	service type
+•	model name
+•	current provider price
+•	billing unit
+•	last fetched date
+•	source URL
+•	auto-fetch enabled or disabled
+•	manual override price
+•	effective price currently in use
+Requirements:
+•	fetch provider prices once per day only
+•	store daily snapshots in provider_price_snapshots
+•	support manual override by admin
+•	effective billing price = manual override if present, otherwise latest fetched official price
+•	show price history per provider/model
+•	allow enable/disable auto-fetch per provider
+•	support providers such as OpenAI, Gemini, Retell, Airtop, Chatbase if needed, and future providers
+•	support different billing units such as input tokens, output tokens, minutes, per-message, credits, session usage, or flat unit pricing
+Markup Rules:
+Build a full markup rules page where admin can define:
+•	provider-level markup
+•	model-level markup
+•	service-level markup
+•	fixed markup multiplier
+•	fixed surcharge
+•	minimum credits charged
+•	credit value basis
+Examples:
+•	OpenAI gpt-4o-mini input/output token pricing
+•	Gemini flash-lite input/output pricing
+•	Retell per-minute pricing
+•	Airtop credit-based or usage-based pricing
+Support these formulas:
+1.	raw_cost based:
+credits_used = ceil((raw_cost * markup_multiplier + fixed_surcharge) / credit_value)
+2.	unit based:
+raw_cost = quantity * provider_unit_price
+credits_used = ceil((raw_cost * markup_multiplier + fixed_surcharge) / credit_value)
+3.	token based:
+raw_cost = (input_tokens / 1000000 * input_price) + (output_tokens / 1000000 * output_price)
+credits_used = ceil((raw_cost * markup_multiplier + fixed_surcharge) / credit_value)
+Allow:
+•	per-provider default rule
+•	per-model override rule
+•	per-service override rule
+•	active/inactive flags
+•	effective rule preview calculator
+Monthly Plans:
+•	hosting plan name
+•	monthly fee
+•	renewal date
+•	status
+•	notes
+Support Logs:
+•	client
+•	support date
+•	minutes used
+•	reason
+•	remaining minutes
+Warranty Tracking:
+•	client
+•	project launch date
+•	warranty end date
+•	expired/active status
+•	manual extension support
+Audit Logs:
+•	record all admin actions such as:
+o	price edits
+o	markup changes
+o	manual credit adjustments
+o	client status changes
+o	support hour edits
+o	warranty edits
+o	API key resets
+Webhook API requirements:
+Create a secure POST endpoint like:
+POST /api/usage/record
+Payload example:
+{
+"client_id": "client_123",
+"event_id": "wf_001_step_04",
+"provider": "openai",
+"service": "chat_reply",
+"model": "gpt-4o-mini",
+"usage": {
+"input_tokens": 420,
+"output_tokens": 180
+},
+"raw_cost": null,
+"meta": {
+"workflow": "facebook-autoreply",
+"channel": "facebook"
+}
+}
+Rules:
+•	validate client API key
+•	validate event_id uniqueness
+•	compute effective provider price
+•	compute raw cost
+•	compute credits used using active markup rule
+•	deduct balance
+•	store usage event
+•	create transaction record
+•	return remaining balance
+Response example:
+{
+"success": true,
+"credits_used": 8,
+"remaining_credits": 492,
+"low_balance": false
+}
+Additional API endpoints:
+•	GET /api/clients/:id/balance
+•	POST /api/credits/add
+•	GET /api/clients/:id/usage
+•	GET /api/clients/:id/subscription
+•	POST /api/support/log
+•	POST /api/api-keys/rotate
+Daily provider price fetcher requirements:
+•	run once every 24 hours
+•	fetch latest provider prices from official pricing sources when possible
+•	support multiple providers
+•	normalize prices into a common schema
+•	store snapshots with fetched_at
+•	compare yesterday vs today
+•	flag changed prices
+•	keep historical pricing records
+•	allow admin manual refresh
+•	allow admin manual override
+•	never silently replace manual override
+•	effective price should always be explicit in UI
+Pricing data structure should support:
+•	provider
+•	service
+•	model
+•	unit_type
+•	input_price
+•	output_price
+•	flat_unit_price
+•	currency
+•	source_url
+•	fetched_at
+•	manual_override fields
+•	effective_price fields
+Database model expectations:
+Design normalized Prisma schema for:
+•	User
+•	Client
+•	ClientBalance
+•	UsageEvent
+•	CreditTransaction
+•	ProviderPriceSnapshot
+•	PricingRule
+•	MonthlySubscription
+•	SupportHourLedger
+•	WarrantyPeriod
+•	ApiCredential
+•	AuditLog
+UI style:
+•	simple
+•	clean SaaS admin dashboard
+•	modern but minimal
+•	no unnecessary animations
+•	easy to scan
+•	tables with filters
+•	clear cards for balances and statuses
+Implementation priorities:
+Phase 1:
+•	auth
+•	client dashboard basics
+•	admin dashboard basics
+•	webhook billing endpoint
+•	pricing rules
+•	provider price snapshots
+•	daily fetcher
+•	manual overrides
+•	credit ledger
+•	support hours and warranty tracking
+Phase 2:
+•	payment integration for buying credits
+•	low balance notifications
+•	invoice exports
+•	advanced charts
+Important business rules:
+•	prepaid credits are only for variable provider usage
+•	monthly hosting/retainer/support is separate
+•	warranty lasts 1 month from launch by default
+•	support hours are tracked separately from credits
+•	admin must always be able to override pricing and balances
+•	every billable event must be auditable
+Build this as a production-ready MVP architecture with:
+•	recommended folder structure
+•	Prisma schema
+•	route list
+•	dashboard page list
+•	component list
+•	database relations
+•	webhook flow
+•	daily cron job design
+•	pricing engine design
+•	admin override logic
+•	idempotency handling
+•	security notes
+Output format I want from you:
+1.	final recommended architecture
+2.	tech stack justification
+3.	dashboard navigation map
+4.	database schema proposal
+5.	API route design
+6.	pricing engine logic
+7.	daily price fetcher logic
+8.	admin markup editor design
+9.	client and admin UI page breakdown
+10.	implementation plan in phases
+

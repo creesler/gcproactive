@@ -1,0 +1,479 @@
+Prepaid Credit Converter System
+MVP Technical Documentation
+1. Purpose
+This system converts third-party provider usage into our own internal prepaid credit system.
+It is designed for clients who use our automations through their own n8n instance.
+Whenever an automation uses a billable provider such as OpenAI, Gemini, Retell, Airtop, or similar, the workflow sends a webhook to our Node.js API.
+Our API then:
+1.	identifies the client 
+2.	reads the provider usage 
+3.	converts provider usage into internal credits 
+4.	deducts the client balance 
+5.	stores the usage event 
+6.	returns the remaining balance 
+This system is separate from monthly hosting/retainer billing.
+________________________________________
+2. Billing Model
+2.1 Two separate ledgers
+A. Prepaid usage credits
+Used for variable-cost services such as:
+•	LLM usage 
+•	AI chat replies 
+•	voice call usage 
+•	scraping usage 
+•	other external paid providers 
+B. Monthly service/retainer ledger
+Used for:
+•	hosting subscription 
+•	support hours remaining 
+•	warranty period 
+•	monthly maintenance 
+These two ledgers must remain separate.
+________________________________________
+3. Core Architecture
+3.1 Basic flow
+Client n8n workflow:
+1.	automation starts 
+2.	billable provider node runs 
+3.	n8n extracts usage or cost from provider response 
+4.	n8n sends usage payload to our Node server 
+5.	Node server computes credits used 
+6.	Node server deducts credits from client balance 
+7.	Node server logs event 
+8.	Node server returns result to n8n 
+________________________________________
+4. System Components
+4.1 Client n8n instance
+Each client has their own n8n instance or isolated workflow environment.
+Its responsibility:
+•	run automations 
+•	capture provider usage data 
+•	send billing webhook to our Node server 
+4.2 Node.js billing API
+Central service that:
+•	receives usage webhooks 
+•	validates client identity 
+•	computes raw cost 
+•	applies markup formula 
+•	deducts prepaid credits 
+•	stores transactions and usage logs 
+4.3 Database
+Stores:
+•	clients 
+•	balances 
+•	pricing rules 
+•	usage events 
+•	credit transactions 
+•	monthly subscription data 
+•	support hours 
+•	warranty dates 
+________________________________________
+5. Supported Usage Sources
+5.1 LLM providers
+Examples:
+•	OpenAI 
+•	Gemini 
+•	Chatbase-backed model calls 
+•	other model APIs 
+Preferred tracking method:
+•	capture provider response usage object directly in n8n 
+•	send token counts or raw cost to Node server 
+5.2 Voice providers
+Example:
+•	Retell 
+Preferred tracking method:
+•	capture call duration or raw cost after call completion 
+•	send usage to Node server 
+5.3 Scraping/browser providers
+Example:
+•	Airtop 
+Preferred tracking method:
+•	capture returned credits, usage, cost, session result 
+•	send usage to Node server 
+________________________________________
+6. Tracking Strategy
+6.1 Recommended method
+Track usage in real time inside n8n.
+Do not rely on hourly fetching as the primary billing method.
+Why
+Real-time event billing is better because:
+•	each event is tied to a client 
+•	each event is tied to a workflow execution 
+•	easier to prevent duplicate charges 
+•	easier to explain usage later 
+•	easier to stop workflows on insufficient balance 
+6.2 Hourly fetching
+Hourly fetching may still be used only for:
+•	reconciliation 
+•	sanity checks 
+•	comparing totals against provider dashboards 
+But hourly fetch should not be the main source of truth.
+________________________________________
+7. n8n Workflow Billing Pattern
+7.1 General node pattern
+Typical billable workflow structure:
+1.	Trigger node 
+2.	Client Context node 
+3.	Provider Call node 
+4.	Usage Normalize node 
+5.	Billing Webhook node 
+6.	Optional Balance Check / Fallback node 
+7.	Continue workflow 
+7.2 Node responsibilities
+Trigger node
+Starts workflow:
+•	webhook 
+•	schedule 
+•	Facebook event 
+•	WhatsApp event 
+•	WordPress event 
+•	form submission 
+Client Context node
+A Set node near the start that provides:
+•	client_id 
+•	workflow_name 
+•	channel 
+•	optional project/agent/source identifiers 
+Provider Call node
+The actual paid service call:
+•	OpenAI 
+•	Gemini 
+•	Chatbase 
+•	Retell 
+•	Airtop 
+Usage Normalize node
+Transforms provider-specific response format into one common internal payload.
+Billing Webhook node
+HTTP POST to our Node.js API.
+Optional fallback node
+Used if:
+•	insufficient credits 
+•	low balance 
+•	billing API error 
+________________________________________
+8. What should trigger billing
+Billing webhook should be called only after nodes that create billable provider usage.
+Billable nodes
+•	LLM response generation 
+•	chatbot reply generation 
+•	voice call completion 
+•	scrape task completion 
+•	browser session completion 
+•	transcription 
+•	OCR 
+•	other external paid services 
+Non-billable nodes
+Do not bill for:
+•	IF nodes 
+•	Switch nodes 
+•	Merge nodes 
+•	Set/Edit nodes 
+•	formatting nodes 
+•	logic-only Code nodes 
+•	internal database reads 
+•	plain routing logic 
+________________________________________
+9. Universal Billing Payload
+9.1 Payload goal
+All provider events should be normalized into a standard webhook payload format before sending to the billing API.
+9.2 Preferred payload shape
+{
+  "client_id": "client_123",
+  "event_id": "wf_2026_04_04_001",
+  "provider": "openai",
+  "service": "chat_reply",
+  "model": "gpt-4o-mini",
+  "usage": {
+    "input_tokens": 420,
+    "output_tokens": 180
+  },
+  "raw_cost": null,
+  "meta": {
+    "workflow": "facebook-autoreply",
+    "channel": "facebook",
+    "source_id": "page_001"
+  }
+}
+9.3 If raw cost is already known
+{
+  "client_id": "client_123",
+  "event_id": "call_2026_04_04_001",
+  "provider": "retell",
+  "service": "voice_call",
+  "model": null,
+  "usage": {
+    "minutes": 3.5
+  },
+  "raw_cost": 0.24,
+  "meta": {
+    "workflow": "inbound-call-agent",
+    "channel": "phone"
+  }
+}
+________________________________________
+10. Pricing and Conversion Rules
+10.1 Main rule
+Whenever possible, compute billing from raw provider cost.
+Universal formula:
+credits_used = ceil((raw_cost * markup_multiplier) / credit_value)
+10.2 Example
+If:
+•	raw_cost = 0.018 USD 
+•	markup_multiplier = 4 
+•	credit_value = 0.01 USD 
+Then:
+•	billable value = 0.072 USD 
+•	credits_used = ceil(7.2) 
+•	final charge = 8 credits 
+10.3 If raw cost is not sent
+Then Node server computes raw cost from provider usage units.
+Examples:
+•	input_tokens and output_tokens 
+•	minutes 
+•	scrape credits 
+•	sessions 
+•	API calls 
+________________________________________
+11. Pricing Rule Types
+11.1 Cost-based rule
+Used when provider raw cost is available.
+Example:
+•	provider: airtop 
+•	service: scraping 
+•	rule: use raw_cost × markup 
+11.2 Token-based rule
+Used when provider returns token counts but not raw cost.
+Example:
+•	provider: openai 
+•	model: gpt-4o-mini 
+•	input token price per 1M 
+•	output token price per 1M 
+Node server computes raw cost first.
+11.3 Unit-based rule
+Used for things like:
+•	voice minutes 
+•	call duration 
+•	scrape runs 
+•	browser sessions 
+________________________________________
+12. API Design
+12.1 POST /api/usage/record
+Purpose:
+•	receive billable usage event 
+•	validate it 
+•	compute credits 
+•	deduct balance 
+•	log event 
+Request example
+{
+  "client_id": "client_123",
+  "event_id": "wf_001_step_04",
+  "provider": "openai",
+  "service": "chat_reply",
+  "model": "gpt-4o-mini",
+  "usage": {
+    "input_tokens": 420,
+    "output_tokens": 180
+  },
+  "meta": {
+    "workflow": "facebook-autoreply"
+  }
+}
+Response example
+{
+  "success": true,
+  "credits_used": 8,
+  "remaining_credits": 492,
+  "low_balance": false
+}
+________________________________________
+12.2 GET /api/clients/:clientId/balance
+Purpose:
+•	retrieve prepaid balance 
+Response example
+{
+  "client_id": "client_123",
+  "credit_balance": 492
+}
+________________________________________
+12.3 POST /api/credits/add
+Purpose:
+•	manually add or recharge credits 
+Request example
+{
+  "client_id": "client_123",
+  "amount": 5000,
+  "reason": "Starter Package"
+}
+________________________________________
+12.4 GET /api/clients/:clientId/usage
+Purpose:
+•	retrieve usage history 
+________________________________________
+13. Duplicate Protection
+13.1 Idempotency
+Every usage event must include a unique event_id.
+If the same event_id is received more than once:
+•	do not charge again 
+•	return existing result or ignore duplicate 
+This protects against:
+•	n8n retries 
+•	webhook resends 
+•	network errors 
+________________________________________
+14. Security
+Each client n8n instance should authenticate its calls to the Node billing API.
+Recommended:
+•	per-client API key 
+•	HMAC signature or secret header 
+•	HTTPS only 
+Minimum headers:
+•	x-client-id 
+•	x-api-key 
+Optional:
+•	x-signature 
+________________________________________
+15. Suggested Database Schema
+15.1 clients
+•	id 
+•	name 
+•	email 
+•	status 
+•	created_at 
+15.2 credit_balances
+•	client_id 
+•	balance 
+•	updated_at 
+15.3 pricing_rules
+•	id 
+•	provider 
+•	service 
+•	model 
+•	unit_type 
+•	input_unit_price 
+•	output_unit_price 
+•	flat_unit_price 
+•	markup_multiplier 
+•	credit_value 
+•	active 
+15.4 usage_events
+•	id 
+•	client_id 
+•	event_id 
+•	provider 
+•	service 
+•	model 
+•	raw_cost 
+•	credits_used 
+•	input_tokens 
+•	output_tokens 
+•	quantity 
+•	payload_json 
+•	created_at 
+15.5 credit_transactions
+•	id 
+•	client_id 
+•	type 
+•	amount 
+•	description 
+•	related_usage_event_id 
+•	created_at 
+________________________________________
+16. Monthly Service Ledger
+This is separate from prepaid.
+16.1 client_subscriptions
+•	id 
+•	client_id 
+•	plan_name 
+•	hosting_status 
+•	monthly_price 
+•	renewal_date 
+•	status 
+16.2 support_hours
+•	id 
+•	client_id 
+•	included_minutes 
+•	used_minutes 
+•	remaining_minutes 
+•	period_start 
+•	period_end 
+16.3 warranty_periods
+•	id 
+•	client_id 
+•	launch_date 
+•	warranty_start 
+•	warranty_end 
+•	status 
+________________________________________
+17. Business Rules
+17.1 Prepaid credits
+Used only for variable usage:
+•	AI replies 
+•	voice usage 
+•	scraping usage 
+•	similar paid provider actions 
+17.2 Monthly retainer
+Used for:
+•	hosting 
+•	support 
+•	maintenance 
+•	warranty follow-up once warranty expires 
+17.3 Warranty
+Default:
+•	1 month from launch date 
+After warranty:
+•	support goes under retainer 
+•	or bill separately depending on client plan 
+________________________________________
+18. MVP Scope
+Included
+•	credit balance 
+•	webhook-based usage deduction 
+•	pricing rule engine 
+•	usage logging 
+•	duplicate protection 
+•	monthly ledger basics 
+•	support hours remaining 
+•	warranty date tracking 
+Not included yet
+•	provider dashboard syncing as source of truth 
+•	advanced analytics 
+•	invoice generation 
+•	team roles 
+•	multi-tenant admin hierarchy 
+•	automated payment gateways 
+•	full client-facing control panel 
+________________________________________
+19. Recommended MVP Workflow Example
+Facebook auto-reply flow
+1.	Facebook webhook trigger 
+2.	Set client_id, channel, workflow_name 
+3.	HTTP request to LLM provider 
+4.	Extract usage from provider response 
+5.	POST usage to Node billing API 
+6.	API deducts credits 
+7.	If enough balance: 
+o	send reply 
+8.	If low or insufficient balance: 
+o	send fallback or notify admin 
+________________________________________
+20. Key Design Recommendation
+Use this principle:
+n8n tracks usage per event, Node server computes billing, database stores truth.
+Do not use hourly provider fetch as the main billing mechanism.
+Use hourly fetch only for reconciliation.
+________________________________________
+21. Final Summary
+This MVP is a universal prepaid conversion engine.
+It allows:
+•	multiple providers 
+•	one internal credit language 
+•	client-isolated billing 
+•	separate monthly retainer handling 
+•	easy future scaling 
+The simplest successful version is:
+•	n8n sends usage events 
+•	Node computes cost and credits 
+•	client balance updates instantly 
+•	monthly hosting/support remains separate
+
