@@ -576,6 +576,129 @@ footer {
   font-size: 0.8rem;
 }
 
+/* Pricing Section */
+.pricing-section {
+  background: var(--bg-dark);
+  position: relative;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.pricing-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 40px 30px;
+  height: 100%;
+}
+
+.card-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.badge-entry { background: rgba(0, 198, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+.badge-core { background: rgba(124, 252, 0, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+.badge-premium { background: var(--grad-logo); color: white; }
+
+.plan-name {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.plan-price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.plan-price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.feature-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 2rem;
+}
+
+.f-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.pricing-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.pricing-card ul {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.pricing-card ul li {
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.pricing-card ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: 800;
+}
+
+.billing-group {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.billing-group h5 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.pricing-card .btn {
+  width: 100%;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Utilities */
 .text-center { text-align: center; }
 
