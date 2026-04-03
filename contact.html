@@ -17,8 +17,8 @@
             <div class="header-content">
                 <!-- Logo Placeholder -->
                 <div class="logo">
-                    <a href="index.html" aria-label="Home">
-                        <h1>GCPROACTIVE</h1>
+                    <a href="index.html" aria-label="Home" class="logo-link">
+                        <span class="logo-text">GC <span class="text-blue">PROACTIVE</span></span>
                     </a>
                 </div>
                 
@@ -65,7 +65,8 @@
             <!-- Contact Form Section -->
             <section class="contact-form-section">
                 <div class="container">
-                    <form id="contact-form" class="contact-form">
+                    <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="c3d4d3fb-ae67-4e0a-85ab-89cb2419c9b3">
                         <div class="form-group">
                             <label for="name" class="form-label">Name *</label>
                             <input type="text" id="name" name="name" class="form-input" required>
@@ -151,14 +152,14 @@
                 
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p>Email: cindydigital09@gmail.com</p>
+                    <p>Email: Support@gcproactive.com</p>
                     <p>Phone: +63 917 323 1816</p>
                     <p>WhatsApp: +63 917 323 1816</p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 GCPROACTIVE. All rights reserved.</p>
+                <p>&copy; 2023 GC PROACTIVE. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -179,21 +180,7 @@
                 });
             }
             
-            // Contact form submission
-            const contactForm = document.getElementById('contact-form');
-            const successMessage = document.getElementById('success-message');
-            
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // Hide the form
-                    contactForm.style.display = 'none';
-                    
-                    // Show success message
-                    successMessage.style.display = 'block';
-                });
-            }
+            // Contact form is handled by Web3Forms
         });
     </script>
 </body>
